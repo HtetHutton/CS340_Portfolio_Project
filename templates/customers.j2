@@ -80,21 +80,21 @@
     </div>
 
     <div id="update">
-    <form id="updatetCustomer" method="POST">
+    <form id="updateCustomer" method="POST">
     <legend><strong>Update Customer</strong></legend>
     <fieldset class="field">
         <label> customer_id </label> 
-            <select id="cid""> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+            <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
             {% for customer in Customers %}
             <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
             {% endfor %} 
         </select>
-        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
-        <label> customer_last_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
-        <label> email </label> <input type="text" id="cemail" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
-        <label> customer_phone </label> <input type="text" name="cphone" pattern="[0-9]+" placeholder="" required>
+        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" name="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> customer_last_name </label> <input type="text" class="form-control" id="clname" name="clname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> email </label> <input type="text" id="cemail" name="cemail" placeholder="" required>
+        <label> customer_phone </label> <input type="text" name="cphone" placeholder="" required>
     </fieldset>
-        <input class="btn" type="submit" id="updateCustomer" value="Update Customer">
+        <input class="btn" type="submit" id="updateCustomer" name="updateCustomer" value="Update Customer">
         <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
     </form>
     </div>

@@ -37,10 +37,10 @@ def customers():
 
     if request.method == "POST": # INSERT INTO table
         if request.form.get("addCustomer"): # Came from user clicking "Add Customer" button.
-            first_name = request.form["cfname"]
+            first_name = request.form["cfname"]  
             last_name = request.form["clname"]
             email = request.form["cemail"]
-            customer_phone = request.form["cphone"]
+            customer_phone = request.form["cphone"]   # These variables are names from j2 template. 
 
             # All fields must be filled. 
             query = "INSERT INTO `Customers` (first_name, last_name, email, customer_phone) VALUES (%s, %s, %s, %s)"
@@ -48,14 +48,29 @@ def customers():
             cur.execute(query, (first_name, last_name, email, customer_phone))
             mysql.connection.commit()
             return redirect('/customers')
+            # Need to implement CASCADE to Orders later. 
 
-        if request.form.get("deleteCustomer"): # Came from user clicking "Delete Customer" button.
+        elif request.form.get("deleteCustomer"): # Came from user clicking "Delete Customer" button.
             customer_id = request.form["cid"]
             query = "DELETE FROM `Customers` WHERE customer_id= %s"
             cur = mysql.connection.cursor()
             cur.execute(query, (customer_id,))
             mysql.connection.commit()
             return redirect('/customers')
+
+        elif request.form.get("updateCustomer"): # Came from user clicking "Update Customer" button. 
+            customer_id = request.form["cid"]
+            first_name = request.form["cfname"]  
+            last_name = request.form["clname"]
+            email = request.form["cemail"]
+            customer_phone = request.form["cphone"]
+
+            query = "UPDATE `Customers` SET first_name=%s, last_name=%s, email=%s, customer_phone=%s WHERE customer_id=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (first_name, last_name, email, customer_phone, customer_id))
+            mysql.connection.commit()
+            return redirect('/customers')
+
 
 @app.route('/pizzas')
 def pizzas():
