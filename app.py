@@ -26,13 +26,36 @@ def root():
     # return "<H1>My SQL Results:</H1>" + str(results[0])
     return render_template("main.j2")
 
-@app.route('/customers')
+@app.route('/customers', methods=["POST", "GET"])
 def customers():
-    query = "SELECT * FROM Customers;"
-    cur = mysql.connection.cursor()  # Open up connection
-    cur.execute(query)
-    results = cur.fetchall()
-    return render_template("customers.j2", Customers=results)
+    if request.method == "GET": # Just displaying table contents
+        query = "SELECT * FROM Customers;"
+        cur = mysql.connection.cursor()  # Open up connection
+        cur.execute(query)
+        results = cur.fetchall()
+        return render_template("customers.j2", Customers=results)
+
+    if request.method == "POST": # INSERT INTO table
+        if request.form.get("addCustomer"): # Came from user clicking "Add Customer" button.
+            first_name = request.form["cfname"]
+            last_name = request.form["clname"]
+            email = request.form["cemail"]
+            customer_phone = request.form["cphone"]
+
+            # All fields must be filled. 
+            query = "INSERT INTO `Customers` (first_name, last_name, email, customer_phone) VALUES (%s, %s, %s, %s)"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (first_name, last_name, email, customer_phone))
+            mysql.connection.commit()
+            return redirect('/customers')
+
+        if request.form.get("deleteCustomer"): # Came from user clicking "Delete Customer" button.
+            customer_id = request.form["cid"]
+            query = "DELETE FROM `Customers` WHERE customer_id= %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (customer_id,))
+            mysql.connection.commit()
+            return redirect('/customers')
 
 @app.route('/pizzas')
 def pizzas():

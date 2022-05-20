@@ -12,7 +12,7 @@
 <h1>Customers</h1>
     <p></p> 
         <!-- Can include buttons here above the table -->
-        <label for="customer-search">Search for a customer:</label>
+        <label for="customer-search"><strong>Search for a customer:</strong></label>
     <input type="search" id="customer-search" name="q">
 
     <button>Search</button>
@@ -53,12 +53,12 @@
     <form id="insertCustomer" method="POST">
     <legend><strong>Add Customer</strong></legend>
     <fieldset class="field">
-        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
-        <label> customer_last_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
-        <label> email </label> <input type="text" id="cemail" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
-        <label> customer_phone </label> <input type="text" name="cphone" pattern="[0-9]+" placeholder="" required>
+        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" name="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> customer_last_name </label> <input type="text" class="form-control" id="clname" name="clname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> email </label> <input type="text" id="cemail" name="cemail" placeholder="" required>
+        <label> customer_phone </label> <input type="text" id="cphone" name="cphone" placeholder="" required>
     </fieldset>
-        <input class="btn" type="submit" id="addCustomer" value="Add Customer">
+        <input class="btn" type="submit" name="addCustomer" id="addCustomer" value="Add Customer">
         <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
     </form>
     </div>
@@ -68,13 +68,13 @@
     <legend><strong>Delete Customer</strong></legend>
     <fieldset class="field">
     <label> customer_id </label> 
-    <select id="cid""> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+    <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
     {% for customer in Customers %}
      <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
     {% endfor %} 
     </select>
     </fieldset>
-        <input class="btn" type="submit" id="deleteCustomer" value="Delete Customer">
+        <input class="btn" type="submit" id="deleteCustomer" name="deleteCustomer" value="Delete Customer">
         <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
     </form>
     </div>
