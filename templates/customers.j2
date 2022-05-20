@@ -6,7 +6,7 @@
 <body>
 <div id="browse">
 
-<a href="index">Home</a> | <a href="index">Pizzas</a> | <a href="index">Orders</a>
+<a href="/">Home</a> | <a href="pizzas">Pizzas</a> | <a href="orders">Orders</a>
 <p></p> 
 
 <h1>Customers</h1>
@@ -59,7 +59,7 @@
         <label> customer_phone </label> <input type="text" name="cphone" pattern="[0-9]+" placeholder="" required>
     </fieldset>
         <input class="btn" type="submit" id="addCustomer" value="Add Customer">
-        <input class="btn" type="button" value="Cancel" onClick="">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
     </form>
     </div>
 
@@ -68,13 +68,36 @@
     <legend><strong>Delete Customer</strong></legend>
     <fieldset class="field">
     <label> customer_id </label> 
-    <select id="cid""> 
+    <select id="cid""> <!-- for-loop to iterate and show only customer_id on drop down menu -->
     {% for customer in Customers %}
      <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
     {% endfor %} 
     </select>
     </fieldset>
+        <input class="btn" type="submit" id="deleteCustomer" value="Delete Customer">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
     </form>
     </div>
+
+    <div id="update">
+    <form id="updatetCustomer" method="POST">
+    <legend><strong>Update Customer</strong></legend>
+    <fieldset class="field">
+        <label> customer_id </label> 
+            <select id="cid""> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+            {% for customer in Customers %}
+            <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
+            {% endfor %} 
+        </select>
+        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> customer_last_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> email </label> <input type="text" id="cemail" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
+        <label> customer_phone </label> <input type="text" name="cphone" pattern="[0-9]+" placeholder="" required>
+    </fieldset>
+        <input class="btn" type="submit" id="updateCustomer" value="Update Customer">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
 
     </body>
