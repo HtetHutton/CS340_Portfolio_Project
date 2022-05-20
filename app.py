@@ -17,15 +17,38 @@ mysql = MySQL(app)
 # Routes
 @app.route('/')
 def root():
-    query = "SELECT * FROM Pizzas;"
+    #query = "SELECT * FROM Customers;"
+    #query4 = 'SELECT * FROM Customers;';
+    #cur = mysql.connection.cursor()  # Open up connection
+    #cur.execute(query4)
+    #results = cur.fetchall()
 
-    query4 = 'SELECT * FROM Pizzas;';
+    # return "<H1>My SQL Results:</H1>" + str(results[0])
+    return render_template("main.j2")
+
+@app.route('/customers')
+def customers():
+    query = "SELECT * FROM Customers;"
     cur = mysql.connection.cursor()  # Open up connection
-    cur.execute(query4)
+    cur.execute(query)
     results = cur.fetchall()
+    return render_template("customers.j2", Customers=results)
 
-    return "<H1>My SQL Results:</H1>" + str(results[0])
+@app.route('/pizzas')
+def pizzas():
+    query = "SELECT * FROM Pizzas;"
+    cur = mysql.connection.cursor()  # Open up connection
+    cur.execute(query)
+    results = cur.fetchall()
+    return render_template("pizzas.j2", Pizzas=results)
 
+@app.route('/orders')
+def orders():
+    query = "SELECT * FROM Orders"
+    cur = mysql.connection.cursor()  # Open up connection
+    cur.execute(query)
+    results = cur.fetchall()
+    return render_template("orders.j2", Orders=results)
 
 # Listener
 if __name__ == "__main__":

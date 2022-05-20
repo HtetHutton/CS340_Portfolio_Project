@@ -1,0 +1,80 @@
+<head>
+    <title>Customers</title>
+    <!-- Add link to css here --> 
+    <!-- Add script language -->
+</head>
+<body>
+<div id="browse">
+
+<a href="index">Home</a> | <a href="index">Pizzas</a> | <a href="index">Orders</a>
+<p></p> 
+
+<h1>Customers</h1>
+    <p></p> 
+        <!-- Can include buttons here above the table -->
+        <label for="customer-search">Search for a customer:</label>
+    <input type="search" id="customer-search" name="q">
+
+    <button>Search</button>
+    <p></p>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in Customers[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
+    </tr>
+    <tbody>
+
+    <!-- Now, iterate through every customer -->
+    {% for customer in Customers %}
+    <tr>
+        <!-- Then iterate through every key in the current customer dictionary -->
+        {% for key in customer.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{customer[key]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+<p>&nbsp;</p>
+
+    <div id="insert">
+    <form id="insertCustomer" method="POST">
+    <legend><strong>Add Customer</strong></legend>
+    <fieldset class="field">
+        <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> customer_last_name </label> <input type="text" class="form-control" id="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> email </label> <input type="text" id="cemail" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
+        <label> customer_phone </label> <input type="text" name="cphone" pattern="[0-9]+" placeholder="" required>
+    </fieldset>
+        <input class="btn" type="submit" id="addCustomer" value="Add Customer">
+        <input class="btn" type="button" value="Cancel" onClick="">
+    </form>
+    </div>
+
+    <div id="delete">
+    <form id="deleteCustomer" method="POST">
+    <legend><strong>Delete Customer</strong></legend>
+    <fieldset class="field">
+    <label> customer_id </label> 
+    <select id="cid""> 
+    {% for customer in Customers %}
+     <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
+    {% endfor %} 
+    </select>
+    </fieldset>
+    </form>
+    </div>
+
+    </body>
