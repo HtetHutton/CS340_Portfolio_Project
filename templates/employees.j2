@@ -1,0 +1,61 @@
+<head>
+    <title>Employees</title>
+    <!-- Add link to css here --> 
+    <!-- Add script language -->
+</head>
+<body>
+<div id="browse">
+
+<a href="/">Home</a> | <a href="customers">Customer</a> | <a href="orders">Orders</a> | <a href="pizzas">Pizzas</a>
+<p></p> 
+
+<h1>Employees</h1>
+    <p></p> 
+        <!-- Can include buttons here above the table -->
+    <p></p>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in Employees[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
+    </tr>
+    <tbody>
+
+    <!-- Now, iterate through every employee -->
+    {% for employee in Employees %}
+    <tr>
+        <!-- Then iterate through every key in the current employee dictionary -->
+        {% for key in employee.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{employee[key]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+<p>&nbsp;</p>
+
+    <div id="insert">
+    <form id="insertEmployee" method="POST">
+    <legend><strong>Add Employee</strong></legend>
+    <fieldset class="field">
+        <label> employee_firt_name </label> <input type="text" class="form-control" id="efname" name="efname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> employee_last_name </label> <input type="text" class="form-control" id="elname" name="elname" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> hourly_wage </label> <input type="number" class="form-control" id="hwage" name="hwage" pattern="[0-9]{1,}" placeholder="" required>
+    </fieldset>
+        <input class="btn" type="submit" name="addEmployee" id="addEmployee" value="Add Employee">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+    </body>

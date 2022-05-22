@@ -1,0 +1,79 @@
+<head>
+    <title>Pizzas</title>
+    <!-- Add link to css here --> 
+    <!-- Add script language -->
+</head>
+<body>
+<div id="browse">
+<!-- Links to other routes -->
+<a href="/">Home</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> | <a href="employees">Employees</a>
+<p></p> 
+
+<h1>Pizzas</h1>
+    <p></p> 
+        <!-- Can include buttons here above the table -->
+    <p></p>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in Pizzas[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
+    </tr>
+    <tbody>
+
+    <!-- Now, iterate through every pizza -->
+    {% for pizza in Pizzas %}
+    <tr>
+        <!-- Then iterate through every key in the current pizza dictionary -->
+        {% for key in pizza.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{pizza[key]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+<p>&nbsp;</p>
+
+    <div id="insert">
+    <form id="insertPizza" method="POST">
+    <legend><strong>Add Pizza</strong></legend>
+    <fieldset class="field">
+        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> pizza_price </label> <input type="text" class="form-control" id="pprice" name="pprice" pattern="[0-9]{1,}" placeholder="" required>
+    </fieldset>
+        <input class="btn" type="submit" name="addPizza" id="addPizza" value="Add Pizza">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+    <div id="update">
+    <form id="updatePizza" method="POST">
+    <legend><strong>Update Pizza</strong></legend>
+    <fieldset class="field">
+        <label> pizza_id </label> 
+            <select id="pid" name="pid"> <!-- for-loop to iterate and show only pizza_id on drop down menu -->
+            {% for pizza in Pizzas %}
+            <option value={{pizza['pizza_id']}} selected> {{pizza['pizza_id']}} </option>
+            {% endfor %} 
+        </select>
+        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> pizza_price </label> <input type="text" class="form-control" id="pprice" name="pprice" pattern="[0-9]{1,}" placeholder="" required>
+    </fieldset>
+        <input class="btn" type="submit" id="updatePizza" name="updatePizza" value="Update Pizza">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+
+    </body>

@@ -1,0 +1,47 @@
+<head>
+    <title>Orders</title>
+    <!-- Add link to css here --> 
+    <!-- Add script language -->
+</head>
+<body>
+<div id="browse">
+
+<a href="/">Home</a> | <a href="customers">Customer</a> | <a href="employees">Employees</a> | <a href="pizzas">Pizzas</a>
+<p></p> 
+
+<h1>Orders</h1>
+    <p></p> 
+        <!-- Can include buttons here above the table -->
+    <p></p>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in Orders[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
+    </tr>
+    <tbody>
+
+    <!-- Now, iterate through every employee -->
+    {% for order in Orders %}
+    <tr>
+        <!-- Then iterate through every key in the current order dictionary -->
+        {% for key in order.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{order[key]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+<p>&nbsp;</p>
+

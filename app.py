@@ -72,13 +72,62 @@ def customers():
             return redirect('/customers')
 
 
-@app.route('/pizzas')
+@app.route('/pizzas', methods=["POST", "GET"])
 def pizzas():
-    query = "SELECT * FROM Pizzas;"
-    cur = mysql.connection.cursor()  # Open up connection
-    cur.execute(query)
-    results = cur.fetchall()
-    return render_template("pizzas.j2", Pizzas=results)
+    if request.method == "GET": # Just displaying table contents
+        query = "SELECT * FROM Pizzas;"
+        cur = mysql.connection.cursor()  # Open up connection
+        cur.execute(query)
+        results = cur.fetchall()
+        return render_template("pizzas.j2", Pizzas=results)
+
+    if request.method == 'POST':
+        if request.form.get("addPizza"): # Came from user clicking "Add Pizza" button.
+            pizza_type = request.form["ptype"]  
+            pizza_price = request.form["pprice"]
+
+            # All fields must be filled. 
+            query = "INSERT INTO `Pizzas` (pizza_type, pizza_price) VALUES (%s, %s)"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (pizza_type, pizza_price))
+            mysql.connection.commit()
+            return redirect('/pizzas')
+            # Need to implement CASCADE to Orders later. 
+
+        elif request.form.get("updatePizza"): # Came from user clicking "Update Pizza" button.
+            pizza_id = request.form["pid"]
+            pizza_type = request.form["ptype"]  
+            pizza_price = request.form["pprice"]
+
+            # All fields must be filled. 
+            query = "UPDATE `Pizzas` SET pizza_type=%s, pizza_price=%s WHERE pizza_id=%s"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (pizza_type, pizza_price, pizza_id))
+            mysql.connection.commit()
+            return redirect('/pizzas')
+            # Need to implement CASCADE to Orders later.
+
+@app.route('/employees', methods=["POST", "GET"])
+def employees():
+    if request.method == "GET": # Just displaying table contents
+        query = "SELECT * FROM Employees;"
+        cur = mysql.connection.cursor()  # Open up connection
+        cur.execute(query)
+        results = cur.fetchall()
+        return render_template("employees.j2", Employees=results)
+
+    if request.method == "POST": # INSERT INTO table
+        if request.form.get("addEmployee"):
+            employee_first_name = request.form["efname"]
+            employee_last_name = request.form["elname"]
+            hourly_wage = request.form["hwage"]
+
+            query = "INSERT INTO `Employees` (employee_first_name, employee_last_name, hourly_wage) VALUES (%s, %s, %s)"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (employee_first_name, employee_last_name, hourly_wage))
+            mysql.connection.commit()
+            return redirect('/employees')
+
 
 @app.route('/orders')
 def orders():
