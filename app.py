@@ -29,11 +29,18 @@ def root():
 @app.route('/customers', methods=["POST", "GET"])
 def customers():
     if request.method == "GET": # Just displaying table contents
-        query = "SELECT * FROM Customers;"
+        query = "SELECT customer_id AS 'Customer ID', first_name AS 'First Name', last_name AS 'Last Name', \
+        email, customer_phone AS 'Phone' FROM Customers;"
         cur = mysql.connection.cursor()  # Open up connection
         cur.execute(query)
         results = cur.fetchall()
-        return render_template("customers.j2", Customers=results)
+
+        query2 = "SELECT customer_id FROM `Customers` ORDER BY customer_id ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        all_customers_id = cur.fetchall()
+
+        return render_template("customers.j2", Customers=results, Customers_id=all_customers_id)
 
     if request.method == "POST": # INSERT INTO table
         if request.form.get("addCustomer"): # Came from user clicking "Add Customer" button.
@@ -43,7 +50,7 @@ def customers():
             customer_phone = request.form["cphone"]   # These variables are names from j2 template. 
 
             # All fields must be filled. 
-            query = "INSERT INTO `Customers` (first_name, last_name, email, customer_phone) VALUES (%s, %s, %s, %s)"
+            query = "INSERT INTO `Customers` (first_name AS 'Customer First Name', last_name 'Customer Last Name', email, customer_phone AS 'Phone') VALUES (%s, %s, %s, %s)"
             cur = mysql.connection.cursor()  # Open up connection
             cur.execute(query, (first_name, last_name, email, customer_phone))
             mysql.connection.commit()
@@ -70,6 +77,20 @@ def customers():
             cur.execute(query, (first_name, last_name, email, customer_phone, customer_id))
             mysql.connection.commit()
             return redirect('/customers')
+
+        elif request.form.get("searchCustomer"):
+            first_name = request.form["searchCustomerName"]
+            last_name = request.form["searchCustomerName"]
+            query = "SELECT * FROM `Customers` WHERE first_name LIKE %s Or last_name LIKE %s"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (first_name, last_name))
+            search_results = cur.fetchall()
+            query2 = "SELECT * FROM `Customers`;"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query2)
+            results = cur.fetchall()
+            mysql.connection.commit()
+            return render_template("customers.j2", search_results=search_results, Customers=results)
 
 
 @app.route('/pizzas', methods=["POST", "GET"])
@@ -129,13 +150,61 @@ def employees():
             return redirect('/employees')
 
 
-@app.route('/orders')
+@app.route('/orders', methods=["POST", "GET"])
 def orders():
-    query = "SELECT * FROM Orders"
-    cur = mysql.connection.cursor()  # Open up connection
-    cur.execute(query)
-    results = cur.fetchall()
-    return render_template("orders.j2", Orders=results)
+    if request.method == "GET": # Just displaying table contents
+        query = "SELECT order_id AS 'Order ID', order_date AS 'Order Date', CONCAT(Customers.first_name, ' ', \
+        Customers.last_name) AS 'Customer Name', employee_id AS 'Employee ID', \
+        Pizzas.pizza_type AS 'Pizza Type', quantity AS 'Quantity', quantity*Pizzas.pizza_price AS 'total$' FROM Orders \
+        LEFT JOIN Pizzas ON Orders.pizza_id = Pizzas.pizza_id \
+        LEFT JOIN Customers ON Customers.customer_id = Orders.customer_id \
+        ORDER BY Order_id ASC;"
+        cur = mysql.connection.cursor()  # Open up connection
+        cur.execute(query)
+        all_results = cur.fetchall()
+
+        query2 = "SELECT * FROM Orders"
+        cur = mysql.connection.cursor()  # Open up connection
+        cur.execute(query2)
+        results = cur.fetchall()
+
+        query3 = "SELECT customer_id FROM `Customers` ORDER BY customer_id ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        all_customers_id = cur.fetchall()
+
+        query4 = "SELECT employee_id FROM `Employees` ORDER BY employee_id ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        all_employee_id = cur.fetchall()
+
+        query5 = "SELECT pizza_id FROM `Pizzas` ORDER BY pizza_id ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query5)
+        all_pizzas_id = cur.fetchall()
+
+        return render_template("orders.j2", Orders_table=all_results, Orders=results, Customers_id=all_customers_id, Employees_id=all_employee_id, Pizzas_id=all_pizzas_id)
+
+    if request.method == "POST":
+        if request.form.get("addOrder"):
+            order_date = request.form["odate"]
+            customer_id = request.form["cid"]
+            employee_id = request.form["eid"]
+            pizza_id = request.form["pid"]
+            quantity = request.form["qty"] 
+
+            query1 = "SELECT Orders.quantity*Pizzas.pizza_price from Pizzas where Orders.pizza_id = Pizzas.pizza_id;"
+            cur = mysql.connection.cursor()
+            cur.execute(query1)
+            order_total = cur.fetchall()
+
+            # All fields must be filled. 
+            query = "INSERT INTO `Orders` (order_date, customer_id, employee_id, pizza_id, quantity, order_total) VALUES (%s, %s, %s, %s, %s, %s)"
+            cur = mysql.connection.cursor()  # Open up connection
+            cur.execute(query, (order_date, customer_id, employee_id, pizza_id, order_total))
+            mysql.connection.commit()
+            return redirect('/orders')
+
 
 # Listener
 if __name__ == "__main__":

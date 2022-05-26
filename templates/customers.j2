@@ -12,10 +12,40 @@
 <h1>Customers</h1>
     <p></p> 
         <!-- Can include buttons here above the table -->
-        <label for="customer-search"><strong>Search for a customer:</strong></label>
-    <input type="search" id="customer-search" name="q">
 
-    <button>Search</button>
+    <div id="search">
+    <form id="searchCustomer" method="POST">
+        <label><strong>Search for a customer by customer's first name OR last name:</strong></label>
+    <input type="text" id="searchCustomerName" name="searchCustomerName" placeholder="Search by customer's first or last name">
+    <input class="btn" type="submit" name="searchCustomer" value="Search">
+    </form>
+    </div>
+    
+    {% if search_results %}
+        <fieldset>
+        {{ "Search Results: " }}
+    <table border="1" cellpadding="5">
+    <thead>
+        <tr>
+        {% for key in search_results[0].keys() %}
+        <th> {{ key }} </th>
+            {% endfor %}
+        </tr>
+    <tbody>
+    
+    {% for r in search_results %}
+        <tr>
+        {% for key in r.keys() %}
+        <td>{{r[key]}}</td> 
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    <a href='/customers'><input class="btn" type="button" value="Clear Search Results"></a>
+    </fieldset>
+    <p>&nbsp;</p>
+    {% endif %}
+    
     <p></p>
 
 <table border="1" cellpadding="5">
@@ -67,12 +97,12 @@
     <form id="deleteCustomer" method="POST">
     <legend><strong>Delete Customer</strong></legend>
     <fieldset class="field">
-    <label> customer_id </label> 
-    <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
-    {% for customer in Customers %}
-     <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
-    {% endfor %} 
-    </select>
+        <label> customer_id </label> 
+            <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+            {% for item in Customers_id %}
+            <option value={{item['customer_id']}} selected> {{item['customer_id']}} </option>
+            {% endfor %} 
+            </select>
     </fieldset>
         <input class="btn" type="submit" id="deleteCustomer" name="deleteCustomer" value="Delete Customer">
         <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
@@ -85,10 +115,10 @@
     <fieldset class="field">
         <label> customer_id </label> 
             <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
-            {% for customer in Customers %}
-            <option value={{customer['customer_id']}} selected> {{customer['customer_id']}} </option>
+            {% for item in Customers_id %}
+            <option value={{item['customer_id']}} selected> {{item['customer_id']}} </option>
             {% endfor %} 
-        </select>
+            </select>
         <label> customer_first_name </label> <input type="text" class="form-control" id="cfname" name="cfname" pattern="[A-Za-z]{1,}" placeholder="" required>
         <label> customer_last_name </label> <input type="text" class="form-control" id="clname" name="clname" pattern="[A-Za-z]{1,}" placeholder="" required>
         <label> email </label> <input type="text" id="cemail" name="cemail" placeholder="" required>

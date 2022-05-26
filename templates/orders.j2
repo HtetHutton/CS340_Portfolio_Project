@@ -6,7 +6,7 @@
 <body>
 <div id="browse">
 
-<a href="/">Home</a> | <a href="customers">Customer</a> | <a href="employees">Employees</a> | <a href="pizzas">Pizzas</a>
+<a href="/">Home</a> | <a href="customers">Customers</a> | <a href="employees">Employees</a> | <a href="pizzas">Pizzas</a>
 <p></p> 
 
 <h1>Orders</h1>
@@ -19,7 +19,7 @@
     <tr>
         <!-- Iterate through each key in the first entry to get the
         column name -->
-        {% for key in Orders[0].keys() %}
+        {% for key in Orders_table[0].keys() %}
 
         <!-- Create a <th> tag with the key inside of it, this will be
         our header row -->
@@ -31,7 +31,7 @@
     <tbody>
 
     <!-- Now, iterate through every employee -->
-    {% for order in Orders %}
+    {% for order in Orders_table %}
     <tr>
         <!-- Then iterate through every key in the current order dictionary -->
         {% for key in order.keys() %}
@@ -43,5 +43,87 @@
     {% endfor %}
     </table>
     </div>
-<p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <div id="insert">
+    <form id="insertOrder" method="POST">
+    <legend><strong>Add Order</strong></legend>
+    <fieldset class="field">
+        <label> order_date </label> <input type="text" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
+    <!--    <label> order_total </label> <input type="number" id="ototal" name="ototal" pattern="[0-9]{1,}" placeholder="YYYY-MM-DD" required> -->
+        
+        <label> customer_id </label> 
+            <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+            {% for item in Customers_id %}
+            <option value={{item['customer_id']}} selected> {{item['customer_id']}} </option>
+            {% endfor %} 
+            </select>
+        <label> employee_id </label> <select id="eid" name="eid"> <!-- for-loop to iterate and show only employee_id on drop down menu -->
+            {% for item in Employees_id %}
+            <option value={{item['employee_id']}} selected> {{item['employee_id']}} </option>
+            {% endfor %} 
+            </select>
+        <label> pizza_id </label> <input type="text" id="pid" name="pid" placeholder="" required>
+        <label> quantity </label> <input type="number" id="qty" name="qty" placeholder="" required>
+
+    </fieldset>
+        <input class="btn" type="submit" name="addOrder" id="addOrder" value="Add Order">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+    <div id="update">
+    <form id="updateOrder" method="POST">
+    <legend><strong>Update Order</strong></legend>
+    <fieldset class="field">
+        <label> order_id </label> 
+            <select id="oid" name="oid"> <!-- for-loop to iterate and show only order_id on drop down menu -->
+            {% for item in Orders %}
+            <option value={{item['order_id']}} selected> {{item['order_id']}} </option>
+            {% endfor %} 
+            </select>
+
+        <label> order_date </label> <input type="text" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
+        
+        <label> customer_id </label> 
+            <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
+            {% for item in Customers_id %}
+            <option value={{item['customer_id']}} selected> {{item['customer_id']}} </option>
+            {% endfor %} 
+            </select>
+        <label> employee_id </label> <select id="eid" name="eid"> <!-- for-loop to iterate and show only employee_id on drop down menu -->
+            {% for item in Employees_id %}
+            <option value={{item['employee_id']}} selected> {{item['employee_id']}} </option>
+            {% endfor %} 
+            </select>
+        <label> pizza_id </label> <select id="pid" name="pid"> <!-- for-loop to iterate and show only pizza_id on drop down menu -->
+            {% for item in Pizzas_id %}
+            <option value={{item['pizza_id']}} selected> {{item['pizza_id']}} </option>
+            {% endfor %} 
+            </select>
+        <label> quantity </label> <input type="number" id="qty" name="qty" placeholder="" required>
+
+    </fieldset>
+        <input class="btn" type="submit" name="updateOrder" id="updateOrder" value="Update Order">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+    <div id="delete">
+    <form id="deleteOrder" method="POST">
+    <legend><strong>Delete Order</strong></legend>
+    <fieldset class="field">
+    <label> order_id </label> 
+    <select id="oid" name="oid"> <!-- for-loop to iterate and show only order_id on drop down menu -->
+    {% for order in Orders %}
+     <option value={{order['order_id']}} selected> {{order['order_id']}} </option>
+    {% endfor %} 
+    </select>
+    </fieldset>
+        <input class="btn" type="submit" id="deleteOrder" name="deleteOrder" value="Delete Order">
+        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+    </form>
+    </div>
+
+
 
