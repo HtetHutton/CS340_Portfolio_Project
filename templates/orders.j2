@@ -63,7 +63,11 @@
             <option value={{item['employee_id']}} selected> {{item['employee_id']}} </option>
             {% endfor %} 
             </select>
-        <label> pizza_id </label> <input type="text" id="pid" name="pid" placeholder="" required>
+        <label> pizza_id </label> <select id="pid" name="pid"> <!-- for-loop to iterate and show only pizza_id on drop down menu -->
+            {% for item in Pizzas_id %}
+            <option value={{item['pizza_id']}} selected> {{item['pizza_id']}} </option>
+            {% endfor %} 
+            </select>
         <label> quantity </label> <input type="number" id="qty" name="qty" placeholder="" required>
 
     </fieldset>

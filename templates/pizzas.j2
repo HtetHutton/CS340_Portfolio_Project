@@ -49,7 +49,7 @@
     <form id="insertPizza" method="POST">
     <legend><strong>Add Pizza</strong></legend>
     <fieldset class="field">
-        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" placeholder="" required>
         <label> pizza_price </label> <input type="text" class="form-control" id="pprice" name="pprice" pattern="[0-9]{1,}" placeholder="" required>
     </fieldset>
         <input class="btn" type="submit" name="addPizza" id="addPizza" value="Add Pizza">
@@ -67,7 +67,7 @@
             <option value={{pizza['pizza_id']}} selected> {{pizza['pizza_id']}} </option>
             {% endfor %} 
         </select>
-        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" pattern="[A-Za-z]{1,}" placeholder="" required>
+        <label> pizza_type </label> <input type="text" class="form-control" id="ptype" name="ptype" placeholder="" required>
         <label> pizza_price </label> <input type="text" class="form-control" id="pprice" name="pprice" pattern="[0-9]{1,}" placeholder="" required>
     </fieldset>
         <input class="btn" type="submit" id="updatePizza" name="updatePizza" value="Update Pizza">

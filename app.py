@@ -50,7 +50,7 @@ def customers():
             customer_phone = request.form["cphone"]   # These variables are names from j2 template. 
 
             # All fields must be filled. 
-            query = "INSERT INTO `Customers` (first_name AS 'Customer First Name', last_name 'Customer Last Name', email, customer_phone AS 'Phone') VALUES (%s, %s, %s, %s)"
+            query = "INSERT INTO `Customers` (first_name, last_name, email, customer_phone) VALUES (%s, %s, %s, %s)"
             cur = mysql.connection.cursor()  # Open up connection
             cur.execute(query, (first_name, last_name, email, customer_phone))
             mysql.connection.commit()
@@ -193,15 +193,10 @@ def orders():
             pizza_id = request.form["pid"]
             quantity = request.form["qty"] 
 
-            query1 = "SELECT Orders.quantity*Pizzas.pizza_price from Pizzas where Orders.pizza_id = Pizzas.pizza_id;"
-            cur = mysql.connection.cursor()
-            cur.execute(query1)
-            order_total = cur.fetchall()
-
             # All fields must be filled. 
-            query = "INSERT INTO `Orders` (order_date, customer_id, employee_id, pizza_id, quantity, order_total) VALUES (%s, %s, %s, %s, %s, %s)"
+            query = "INSERT INTO `Orders` (order_date, customer_id, employee_id, pizza_id, quantity) VALUES (%s, %s, %s, %s, %s)"
             cur = mysql.connection.cursor()  # Open up connection
-            cur.execute(query, (order_date, customer_id, employee_id, pizza_id, order_total))
+            cur.execute(query, (order_date, customer_id, employee_id, pizza_id, quantity))
             mysql.connection.commit()
             return redirect('/orders')
 
