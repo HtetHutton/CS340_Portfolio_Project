@@ -1,3 +1,8 @@
+<!-- Citation for this file: -->
+<!-- Date: 06/04/2022 -->
+<!-- Adapted from osu-cs340-ecampus/flask-starter-app -->
+<!-- Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app -->
+
 <head>
     <title>Employees</title>
     <!-- Add link to css here --> 
@@ -6,7 +11,7 @@
 <body>
 <div id="browse">
 
-<a href="/">Home</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> | <a href="pizzas">Pizzas</a>
+<a href="/">Home</a> | <a href="pizzas">Pizzas</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> | <a href="employees">Employees</a>
 <p></p> 
 
 <h1>Employees</h1>
@@ -51,10 +56,10 @@
     <fieldset class="field">
         <label> employee_firt_name </label> <input type="text" class="form-control" id="efname" name="efname" pattern="[A-Za-z]{1,}" placeholder="" required>
         <label> employee_last_name </label> <input type="text" class="form-control" id="elname" name="elname" pattern="[A-Za-z]{1,}" placeholder="" required>
-        <label> hourly_wage </label> <input type="number" class="form-control" id="hwage" name="hwage" pattern="[0-9]{1,}" placeholder="" required>
+        <label> hourly_wage </label> <input type="number" class="form-control" id="hwage" name="hwage" step="0.01" min="0" required>
     </fieldset>
         <input class="btn" type="submit" name="addEmployee" id="addEmployee" value="Add Employee">
-        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+        <a href="employees"><input class="btn" type="button" value="Cancel"> </a>
     </form>
     </div>
 

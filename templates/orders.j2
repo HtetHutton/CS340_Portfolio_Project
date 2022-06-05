@@ -1,3 +1,8 @@
+<!-- Citation for this file: -->
+<!-- Date: 06/04/2022 -->
+<!-- Adapted from osu-cs340-ecampus/flask-starter-app -->
+<!-- Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app -->
+
 <head>
     <title>Orders</title>
     <!-- Add link to css here --> 
@@ -6,7 +11,7 @@
 <body>
 <div id="browse">
 
-<a href="/">Home</a> | <a href="customers">Customers</a> | <a href="employees">Employees</a> | <a href="pizzas">Pizzas</a>
+<a href="/">Home</a> | <a href="pizzas">Pizzas</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> | <a href="employees">Employees</a>
 <p></p> 
 
 <h1>Orders</h1>
@@ -49,7 +54,7 @@
     <form id="insertOrder" method="POST">
     <legend><strong>Add Order</strong></legend>
     <fieldset class="field">
-        <label> order_date </label> <input type="text" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
+        <label> order_date </label> <input type="date" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
     <!--    <label> order_total </label> <input type="number" id="ototal" name="ototal" pattern="[0-9]{1,}" placeholder="YYYY-MM-DD" required> -->
         
         <label> customer_id </label> 
@@ -63,16 +68,17 @@
             <option value={{item['employee_id']}} selected> {{item['employee_id']}} </option>
             {% endfor %} 
             </select>
-        <label> pizza_id </label> <select id="pid" name="pid"> <!-- for-loop to iterate and show only pizza_id on drop down menu -->
+        <label> pizza_id </label> 
+            <select id="pid" name="pid"> <!-- for-loop to iterate and show only pizza_id on drop down menu -->
             {% for item in Pizzas_id %}
             <option value={{item['pizza_id']}} selected> {{item['pizza_id']}} </option>
             {% endfor %} 
             </select>
-        <label> quantity </label> <input type="number" id="qty" name="qty" placeholder="" required>
+        <label> quantity </label> <input type="number" id="qty" name="qty" step="1" min="1" required>
 
     </fieldset>
         <input class="btn" type="submit" name="addOrder" id="addOrder" value="Add Order">
-        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+        <a href="orders"><input class="btn" type="button" value="Cancel"> </a>
     </form>
     </div>
 
@@ -87,7 +93,7 @@
             {% endfor %} 
             </select>
 
-        <label> order_date </label> <input type="text" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
+        <label> order_date </label> <input type="date" id="odate" name="odate" placeholder="YYYY-MM-DD" required>
         
         <label> customer_id </label> 
             <select id="cid" name="cid"> <!-- for-loop to iterate and show only customer_id on drop down menu -->
@@ -105,11 +111,11 @@
             <option value={{item['pizza_id']}} selected> {{item['pizza_id']}} </option>
             {% endfor %} 
             </select>
-        <label> quantity </label> <input type="number" id="qty" name="qty" placeholder="" required>
+        <label> quantity </label> <input type="number" id="qty" name="qty" step="1" min="1" required>
 
     </fieldset>
         <input class="btn" type="submit" name="updateOrder" id="updateOrder" value="Update Order">
-        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+        <a href="orders"><input class="btn" type="button" value="Cancel"> </a>
     </form>
     </div>
 
@@ -125,7 +131,7 @@
     </select>
     </fieldset>
         <input class="btn" type="submit" id="deleteOrder" name="deleteOrder" value="Delete Order">
-        <input class="btn" type="button" value="Cancel" onClick=""> <!-- need to put a function here to return to browse -->
+        <a href="orders"><input class="btn" type="button" value="Cancel"> </a>
     </form>
     </div>
 
