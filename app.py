@@ -61,15 +61,15 @@ def customers():
             cur.execute(query, (first_name, last_name, email, customer_phone))
             mysql.connection.commit()
 
-            # Insert into child tables with some null values. Only customer ID has non-null value. 
-            #query2 = "INSERT INTO `Orders` (customer_id) VALUES (SELECT max(customer_id) FROM `Customers`)"
-            #query2 = "INSERT INTO `Orders` (customer_id) VALUES (last_insert_id())"
-            #cur = mysql.connection.cursor()  
-            #cur.execute(query2, (customer_id))
-            #mysql.connection.commit()
+            # Inserting a new Customer also inserts a new row into child tables with some null values. Only customer ID has non-null value. 
+            query2 = "INSERT INTO Orders (customer_id) \
+            VALUES ((SELECT Customers.customer_id FROM Customers WHERE first_name =%s AND last_name =%s));"
+            cur = mysql.connection.cursor()  
+            cur.execute(query2, (first_name, last_name))
+            mysql.connection.commit()
 
             return redirect('/customers')
-            # Need to implement CASCADE to Orders later. 
+            # CASCADEs to Orders. 
 
         elif request.form.get("deleteCustomer"): # Came from user clicking "Delete Customer" button.
             customer_id = request.form["cid"]
@@ -95,11 +95,11 @@ def customers():
         elif request.form.get("searchCustomer"):
             first_name = request.form["searchCustomerName"]
             last_name = request.form["searchCustomerName"]
-            query = "SELECT * FROM `Customers` WHERE first_name LIKE %s Or last_name LIKE %s"
+            query = "SELECT * FROM `Customers` WHERE first_name LIKE %s Or last_name LIKE %s" # query to perform searh
             cur = mysql.connection.cursor() 
             cur.execute(query, (first_name, last_name))
             search_results = cur.fetchall()
-            query2 = "SELECT * FROM `Customers`;"
+            query2 = "SELECT * FROM `Customers`;" # Did another query here to display Customers page again after Search. 
             cur = mysql.connection.cursor() 
             cur.execute(query2)
             results = cur.fetchall()
@@ -174,7 +174,7 @@ def orders():
     if request.method == "GET": # Just displaying table contents
         query = "SELECT order_id AS 'Order ID', order_date AS 'Order Date', CONCAT(Customers.first_name, ' ', \
         Customers.last_name) AS 'Customer Name', employee_id AS 'Employee ID', \
-        Pizzas.pizza_type AS 'Pizza Type', quantity AS 'Quantity', quantity*Pizzas.pizza_price AS 'Order Total' FROM Orders \
+        Pizzas.pizza_type AS 'Pizza Type', quantity AS 'Quantity', order_total AS 'Order Total' FROM Orders \
         LEFT JOIN Pizzas ON Orders.pizza_id = Pizzas.pizza_id \
         LEFT JOIN Customers ON Customers.customer_id = Orders.customer_id \
         ORDER BY Order_id ASC;"
@@ -182,7 +182,7 @@ def orders():
         cur.execute(query)
         all_results = cur.fetchall()
 
-        query2 = "SELECT * FROM Orders" 
+        query2 = "SELECT * FROM Orders" # I don't think I really need this query.
         cur = mysql.connection.cursor()  
         cur.execute(query2)
         results = cur.fetchall()
